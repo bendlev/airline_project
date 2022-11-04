@@ -1,4 +1,4 @@
-# airline_project
+# airport_graph_project
 Repository for the development of the [COSC1](https://dartmouth.smartcatalogiq.com/current/orc/Departments-Programs-Undergraduate/Computer-Science/COSC-Computer-Science-Undergraduate/COSC-1) Lab 4 assignment to be deployed at Dartmouth College in Winter 2023. All files are original work, unless specified otherwise.
 
 ***

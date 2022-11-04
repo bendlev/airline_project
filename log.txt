@@ -1,0 +1,38 @@
+Date generated: 2022-11-04 03:58:06.475276 
+Username: bendl 
+Purpose: Proceeding with build of airport_graph.txt 
+
+====================
+
+Opened airlines.dat, and found 7698 airports.
+Generated airlines.csv, with 6074 valid observations out of 7698 observations in the dataset.
+Though 7698 observations were identified, 6074 had all information required to record them. A drop in 1624 observations.
+It should be noted that the id numbers in airports.dat read up to 14000, while the real number of airports is 7698 in the data.
+
+Opened routes.dat, and found 67663 routes.
+Ensuring that all destination airports are found in airports.csv. If not, they will be omitted as valid destinations.
+Out of 3239 airports previously identified, there were 66607 valid destinations out of 67090 total recorded destinations. 0.9928% of destinations were valid.
+While 6074 airports had characteristic data, 3409 had available route data. A drop in 2665 observations.
+
+Now ensuring that all source-destination connections are bi-directional in the graph.
+Of the 67039 total neighbors among all airports, 800 (0.0119%) were not bi-directional.
+All source-destination connections are now bi-directional in the graph. Rewriting onto airports_destinations_bidir.txt file.
+
+Airport data will be collected in an Airport object and used to construct graph.
+resize_graph.py will check the size of the largest tree in the graph,
+ and eliminate airports outside of largest tree.
+Using Amsterdam Airport Schiphol as the starting point, the size of the BFS graph was 3204.
+35 'lonely airports' will be deleted from the forest, resulting in a single connected tree of 3204 nodes.
+
+====================
+
+airport_graph.txt has been generated with 3204 Airports, each connected with bi-directional edges.
+Given the patchwork nature of the available data (airports.dat and routes.dat),
+the previous operations were neccesary in to generate a clean dataset to suit course needs.
+
+Basic Graph Analysis:
+
+The most connected airport is Amsterdam Airport Schiphol.
+The least connected airport is Thule Air Base.
+
+Uncomment lines 284-292 in resize_graph.py to run BFS analysis. Runtime is ~2.6 sec/node.

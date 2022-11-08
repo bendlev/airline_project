@@ -6,12 +6,7 @@ import operator
 import numpy as np
 # from a.breadth_first import average_breadth
 
-f = open(r"temp\airports_trimmed.txt", "r", encoding="utf-8")
 
-rstring = "Airport data will be collected in an Airport object and used to construct graph.\n"
-rstring += "resize_graph.py will check the size of the largest tree in the graph,\n and eliminate airports outside of largest tree.\n"
-
-ndict = {}
 
 class Airport:
 
@@ -155,6 +150,12 @@ def full_average_breadth(airports: dict, limit = 30) -> list:
     return path_lens, avg_path_lens # avg. len of all paths in graph
 
 
+f = open(r"temp\airports_trimmed.txt", "r", encoding="utf-8")
+
+rstring = "Airport data will be collected in an Airport object and used to construct graph.\n"
+rstring += "resize_graph.py will check the size of the largest tree in the graph,\n and eliminate airports outside of largest tree.\n"
+
+ndict = {}
 
 
 ## FILE READS ##
@@ -179,12 +180,6 @@ for iata in ndict:
     
     ndict[iata].set_neighbors(nlist)
 
-
-# alist = []
-# for key in ndict:
-#     alist.append(ndict[key])
-
-# alist.sort(key=operator.attrgetter("neighbor_count"), reverse=False)
 
 most_connected = "AMS" # using above sort, ATL was the most connected
 

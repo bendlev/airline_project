@@ -41,6 +41,9 @@ class Airport:
         self.draw_x = (self.long + 180) * (WINDOW_WIDTH / 360)
         self.draw_y = ((self.lat * -1) + 90) * (WINDOW_HEIGHT / 180)
 
+        set_fill_color(0.9568, 0.9647, 0.1843) # yellow
+        set_stroke_color(1, 0, 0)
+
         draw_circle(self.draw_x, self.draw_y, self.RADIUS)
     
     def in_circle(self, mouseX, mouseY):

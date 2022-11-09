@@ -5,6 +5,7 @@
 from airport import Airport
 from cs1lib import *
 from breadth_first import breadth_first
+from random import uniform
 
 
 f = open(r"student/airport_graph.txt", "r", encoding="utf-8")
@@ -113,16 +114,25 @@ def draw_paths(pathList):
 
     global line_vals
 
+    r = 1
+    g = 0
+    b = 0
+
     i = 0
     while i < len(pathList) - 1:
-        line_vals.append([int(pathList[i].draw_x), int(pathList[i].draw_y), int(pathList[i+1].draw_x), int(pathList[i+1].draw_y)])
+        if r - 0.2 > 0:
+            r -= 0.
+        else:
+            r = 1
+        if b + 0.2 < 1:
+            b += 0.2
+        else:
+            b = 0
+
+        line_vals.append([int(pathList[i].draw_x), int(pathList[i].draw_y), int(pathList[i+1].draw_x), int(pathList[i+1].draw_y), r, g, b])
         i += 1
     
-    for line in line_vals:
-
-        set_stroke_color(1, 0, 0)
-        set_stroke_width(3)
-        draw_line(*line)
+    
 
 # draw paths between points in a BFS path
 # def main():
@@ -138,7 +148,6 @@ def draw_paths(pathList):
 
 #     draw_paths(path5)
 
-
 # start_graphics(main, width=WINDOW_WIDTH, height=WINDOW_HEIGHT, mouse_move=myMouse)
 
 def airportBot():
@@ -150,7 +159,9 @@ def airportBot():
     i = 0
 
     airport_str = ""
+
     for key in ndict:
+        # print airports 20 at a time, for each line
         if i % 20 == 0 and i != 0:
             airport_str += key + ", "  + "\n"
             i += 1
@@ -174,16 +185,33 @@ def airportBot():
     print(f"Great! You'll be starting from {goalKey}: {ndict[goalKey].name}\n\n")
 
     print(f"Departing from: {str(start)}\n")
-    print(f"Arriving at: {str(goal)}\n")
+    print(f"Arriving at: {str(goal)}\n\n")
 
     userPath = breadth_first(start, goal)
 
+    pathStr = ""
+
+    for i in range(len(userPath)):
+        pathStr += userPath[i].name + "\n"
+
+    print(f"To get there, it'll take {len(userPath)} stops. Including:\n")
+    print(pathStr + "\n")
+
+    print(f"== Thanks for Flying Kommineni Air Ways! ==")
+
     return userPath
 
+# set start and goal vertices, get BFS path
 myPath = airportBot()
 
+# populate list_vals with 
+draw_paths(myPath)
+
+        
+
 def main():
-    global ndict, WINDOW_WIDTH, WINDOW_HEIGHT, mouseX, mouseY
+
+    global ndict, WINDOW_WIDTH, WINDOW_HEIGHT, mouseX, mouseY, myPath
 
     clear()
     draw_image(img, 0, 0)
@@ -191,9 +219,13 @@ def main():
     for key in ndict:
         set_stroke_width(1)
         set_fill_color(0, 1, 0)
+        set_stroke_color(0, 1, 1)
         ndict[key].draw(WINDOW_WIDTH, WINDOW_HEIGHT)
 
-    draw_paths(myPath)
+    for line in line_vals:
+        set_stroke_color(line[4], line[5], line[6])
+        set_stroke_width(3)
+        draw_line(line[0], line[1], line[2], line[3])
 
 
 start_graphics(main, width=WINDOW_WIDTH, height=WINDOW_HEIGHT, mouse_move=myMouse)

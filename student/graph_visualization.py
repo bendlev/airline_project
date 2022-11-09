@@ -114,20 +114,10 @@ def draw_paths(pathList):
 
     global line_vals
 
-    r = 1
-    g = 0
-    b = 0
+    r, g, b = 0.9568, 0.9647, 0.1843
 
     i = 0
     while i < len(pathList) - 1:
-        if r - 0.2 > 0:
-            r -= 0.
-        else:
-            r = 1
-        if b + 0.2 < 1:
-            b += 0.2
-        else:
-            b = 0
 
         line_vals.append([int(pathList[i].draw_x), int(pathList[i].draw_y), int(pathList[i+1].draw_x), int(pathList[i+1].draw_y), r, g, b])
         i += 1
@@ -228,4 +218,4 @@ def main():
         draw_line(line[0], line[1], line[2], line[3])
 
 
-start_graphics(main, width=WINDOW_WIDTH, height=WINDOW_HEIGHT, mouse_move=myMouse)
+start_graphics(main, width=WINDOW_WIDTH, height=WINDOW_HEIGHT, mouse_move=myMouse, title="Airport Pathfinder")

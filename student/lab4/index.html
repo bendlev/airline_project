@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow-y: scroll;">
+  <head>
+    <title>CS 1</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An introduction to Computer Science and Python">
+    <!-- Pages change frequently.  Don't cache them, browsers.-->
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Expires" content="0">
+    <link href="../css/djb.css" rel="stylesheet">
+    <!-- google prettyprint-->
+    <!--link(href="http://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.css", rel="stylesheet")-->
+    <!--link(rel="stylesheet" type="text/css" href="../jside-0.0.6/jside.css")-->
+  </head>
+</html>
+<body>
+  <script>
+    window.CLASS_OPT = {
+        "processing": {"processing": true, "displayWidth": "200px", "displayHeight": "200px"},
+        "norun": {"runnable": false},
+        "fold": {"fold": true},
+        "fontlarge": {"fontSize": "1.3em"},
+        "display200": {"displayWidth": "200px", "displayHeight": "200px"},
+        "display300": {"displayWidth": "300px", "displayHeight": "300px"},
+        "display400": {"displayWidth": "400px", "displayHeight": "400px"},
+        "exercise": {"post":"../jside-0.0.6/jside_sqlite.php", 
+                     "database":"/net/class/cs1/cs1_exercise_responses/responses.sqlite3"}
+      };
+        
+    
+  </script><div id="navbar">
+    <ul>
+      <li style="float:right;">Dartmouth CS 1, Spring 2022</li>
+      <li><a href="../syllabus/index.html">About</a></li>
+      <li><a href="../schedule/index.html">Schedule</a></li>
+      <li><a href="http://projectpython.net">Text</a></li>
+    </ul>
+</div>
+<h1 id="lab-assignment-4-dartmouth-pathfinder">Lab Assignment 4: Dartmouth pathfinder</h1>
+<p>In this lab assignment, you will create a graph that models part of the Dartmouth campus, find paths from one vertex in this graph to another vertex, and display them. Here is a scaled-down screenshot from the program:</p>
+<div class="figure">
+<img src="screenshot.png" />
+
+</div>
+<p>There’s a map of the Dartmouth campus. That map has a graph overlaid on top of it, with vertices drawn at their locations on the map. Many of the vertices that are close together and have a footpath between them have an edge between them.</p>
+<p>The vertices are shown as blue circles. The edges are blue lines. To get this screen shot, I pressed and released the mouse button when it was on the vertex with a small red circle on it in front of Sudikoff. Then, with the mouse button not pressed, I moved the mouse over to a vertex near 1953 Commons. The program performed a breadth-first search on the graph and drew the resulting connecting path in red on the graph. My program also displayed the names of the starting and ending vertices, but that’s an easy extra-credit option.</p>
+<p>I recommend that you tackle the problem in three pieces, and write one file for each piece. The <a href="#checkpoint">checkpoint</a> will be part of the first piece.</p>
+<h2 id="load-the-data-and-create-a-graph-data-structure-and-a-dictionary-of-vertices">Load the data and create a graph data structure and a dictionary of vertices</h2>
+<p>You’ll want to create a class to hold information about each vertex. I’m calling this class <code>Vertex</code>, so it should be in a file named vertex.py. Creative, huh? A <code>Vertex</code> object should have instance variables holding its name and its <em>x</em> and <em>y</em> locations on the map. And it should have an instance variable for its adjacency list: a list (a Python list—no need to get fancy and have a linked list) of references to <code>Vertex</code> objects for its adjacent vertices. You’ll want to write some methods for <code>Vertex</code> objects; we’ll look at methods later.</p>
+<p>After creating vertex.py, write the graph-loading function into a file called <code>load_graph.py</code>.</p>
+<p>We have done the work of identifying the connections between vertices, and written a data file, <a href="dartmouth_graph.txt" class="uri">dartmouth_graph.txt</a>, which has the locations of each vertex, and the connections between each vertex. Drag this data file into your project for this lab.</p>
+<p>Your job is to write a function <code>load_graph</code> in load_graph.py, which takes one parameter, the name of the data file. <code>load_graph</code> should create one <code>Vertex</code> object per line in the data file and add to a dictionary a reference to each <code>Vertex</code> object it creates. The <code>Vertex</code> references (addresses) will be the values in the dictionary, and the names of the vertices will be the keys for the dictionary. When done reading and processing all the information in the data file, the function should return the address of the dictionary, which will have information about all the vertices.</p>
+<p>I recommend that <code>load_graph</code> make two passes over the data file. (You may just read it in once and save all the lines in a Python list of strings if you like.) The first pass creates all the <code>Vertex</code> objects, storing the coordinates in the objects, and it also creates the dictionary mapping vertex names to references to <code>Vertex</code> objects. But the first pass doesn’t create the adjacency lists in the <code>Vertex</code> objects. Why not? Because you need to have created <em>all</em> the <code>Vertex</code> objects before you can create adjacency lists. After all, the adjacency lists contain references to <code>Vertex</code> objects, and if you haven’t created the <code>Vertex</code> objects yet, you won’t have created the references. Once you’ve created all the <code>Vertex</code> objects in the first pass—but without filling in their adjacency lists— the second pass creates the adjacency lists in the <code>Vertex</code> objects. If you make two passes over the file, you will need to close it after the first pass and open it again before the second pass.</p>
+<p>Let’s look more closely at the format and content of the data file. Here is the first line:</p>
+<pre><code>Green Southwest; Robinson/Collis, Green South, Green West, Green Center, Green East; 510, 798</code></pre>
+<p>The name before the first semicolon, Green Southwest, is a name that uniquely identifies a vertex. This name goes into the <code>Vertex</code> object and is stored as an instance variable, and it also serves as the key into the dictionary that stores the addresses of all the <code>Vertex</code> objects.</p>
+<p>After the first semicolon may be several names, which identify the vertices adjacent to the current vertex. The names are separated by commas. So the vertices with names Robinson/Collis, Green South, Green West, Green Center, and Green East are adjacent to the vertex named Green Southwest.</p>
+<p>After the second semicolon, there will be exactly two numbers, separated by a comma. These numbers are the <em>x</em>- and <em>y</em>-coordinates of the vertex on the map, in pixels, which you’ll want to store in instance variables of the corresponding <code>Vertex</code> object.</p>
+<p>I would expect your <code>load_graph</code> function to do something like this to deal with the first line:</p>
+<ol style="list-style-type: decimal">
+<li>Split up the line into three pieces: the vertex name, the list of names of adjacent vertices, and the <em>x</em>- and <em>y</em>-coordinates.</li>
+<li>Create a new <code>Vertex</code> object with the name and coordinate data stored as instance variables. (The name is a string, and the coordinates are ints.) The adjacency list, for now, is an empty list.</li>
+<li>Put the new <code>Vertex</code> object into a dictionary, with the string <code>&quot;Green Southwest&quot;</code> as the key.</li>
+</ol>
+<p>Notice that we haven’t done anything with Robinson/Collis, Green South, Green West, Green Center, and Green East, the names of the vertices adjacent to this vertex. That’s because, as we’ve seen, their <code>Vertex</code> objects don’t exist yet (we’ve created a <code>Vertex</code> object only for Green Southwest), and so we cannot yet add them to the adjacency list of the <code>Vertex</code> object we have just created.</p>
+<p>After looping over all lines in the file and creating all the <code>Vertex</code> objects with coordinates, it’s time for the second pass. Loop over all lines of the file again. For each vertex, get its name and the names of its adjacent vertices. Lookup the current vertex in the dictionary. For each vertex that is adjacent to the current vertex, look it up in the dictionary, based on its name. When you lookup a vertex in the dictionary, you get a reference to a <code>Vertex</code> object. For each adjacent vertex, append a reference to its <code>Vertex</code> object to the adjacency list in the <code>Vertex</code> object of the current vertex. (The adjacency list should initially be an empty Python list. You should append the adjacent vertices to the adjacency list in the order that they appear in the file. Why? I ordered them in the file so that the shorter edges appear first. That way, you <em>tend</em>—but are not fully guaranteed—to get paths that not only have fewer edges, but are actually shorter in distance.)</p>
+<p>When <code>load_graph</code> has finished both passes, you should have a dictionary that has references to <code>Vertex</code> objects in it as values, accessed by using the keys Green Southwest (from the first line of the data file) through Robinson/Collis (from the last line of the data file). Each <code>Vertex</code> object should have instance variables filled in for its <em>x</em>- and <em>y</em>-coordinates and for its adjacency list—the Python list of references to adjacent <code>Vertex</code> objects, as indicated in the data file.</p>
+<h2 id="checkpoint">Checkpoint</h2>
+<p>For the checkpoint, include in the <code>Vertex</code> class a <code>__str__</code> method that produces a string in <em>exactly</em> the following format:</p>
+<ul>
+<li>the vertex name</li>
+<li>a semicolon</li>
+<li>the string “Location:”</li>
+<li>the vertex’s <em>x</em>-coordinate</li>
+<li>a comma</li>
+<li>the vertex’s <em>y</em>-coordinate</li>
+<li>a semicolon</li>
+<li>the string “Adjacent vertices:”</li>
+<li>the names of all the adjacent vertices, separated by commas</li>
+</ul>
+<p>Before each punctuation mark (colon, semicolon, and comma), there should be no space, and there should be exactly one space after. Note that there’s no comma after the last adjacent vertex.</p>
+<p>For example, for the first line of <a href="dartmouth_graph.txt" class="uri">dartmouth_graph.txt</a>, if you call <code>str</code> on its <code>Vertex</code> object, you should get the string</p>
+<pre><code>Green Southwest; Location: 510, 798; Adjacent vertices: Robinson/Collis, Green South, Green West, Green Center, Green East</code></pre>
+<p>You probably won’t need the <code>__str__</code> function after the checkpoint, but it gives us (and you) a way to determine whether your <code>load_graph</code> function works correctly.</p>
+<p>That’s because in your checkpoint, after creating your <code>Vertex</code> class and your <code>load_graph</code> function in load_graph.py, you should run the following code, in <a href="lab4_checkpoint.py" class="uri">lab4_checkpoint.py</a>:</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co"># lab4_checkpoint.py</span>
+<span class="co"># CS 1 Lab Assignment #4 checkpoint by THC.</span>
+<span class="co"># Creates a dictionary of Vertex objects based on reading in a file.</span>
+<span class="co"># Writes out a string for each Vertex object to a file.</span>
+
+<span class="ch">from</span> load_graph <span class="ch">import</span> load_graph
+
+vertex_dict = load_graph(<span class="st">&quot;dartmouth_graph.txt&quot;</span>)
+
+out_file = <span class="dt">open</span>(<span class="st">&quot;vertices.txt&quot;</span>, <span class="st">&quot;w&quot;</span>)
+<span class="kw">for</span> vertex in vertex_dict:
+    out_file.write(<span class="dt">str</span>(vertex_dict[vertex]) + <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
+out_file.close()</code></pre></div>
+<p>It will produce a file named vertices.txt, and it should match <em>exactly</em> my version of this file, except that the order of the lines might differ.</p>
+<!--Your section leader will be able to check that it matches my
+version of the file by running a utility that I am supplying to him or
+her. It reads each line of my vertices.txt file and each line of your
+vertices.txt file into two lists, sorts the lists, and then checks that
+the lines in the corresponding lists match *exactly*. In that way, we'll
+know that you've constructed your dictionary of `Vertex` objects
+correctly. -->
+<p>For the checkpoint, submit your vertex.py, load_graph.py, and vertices.txt files.</p>
+<h2 id="displaying-the-graph-and-selecting-the-start-and-goal-vertices">Displaying the graph and selecting the start and goal vertices</h2>
+<p>In another file, let’s call it map_plot.py, you can put the drawing code. This code should</p>
+<ol style="list-style-type: decimal">
+<li><p>Draw the map background. The image file is <a href="dartmouth_map.png" class="uri">dartmouth_map.png</a>. Use the <code>load_image</code> and <code>draw_image</code> functions to load and display the map image. You should load the image only once; it’s a slow operation.</p>
+<p>Notice that the image is bigger than the default size for the graphics window. It’s 1012 pixels wide and 811 pixels high, so give these values as the third and fourth parameters when you call <code>start_graphics</code>.</p></li>
+<li><p>Draw the graph. You have the dictionary containing information about the graph’s vertices. Each <code>Vertex</code> object has information that allows you to get <em>x</em>- and <em>y</em>-coordinates for the vertex, and it also has a list of references to <code>Vertex</code> objects for all adjacent vertices. You can loop over all items in the dictionary using the approach described in the notes. In addition to drawing the vertices, you should draw the edges connecting the vertices. Because the graph is undirected, each edge will appear in two adjacency lists. It’s fine to draw each edge twice.</p>
+<p>In order to draw vertices and edges, you should define methods in the <code>Vertex</code> class to do so. I have one method that draws a vertex in a color given by parameters for r, g, and b. I have one method that takes as parameters a reference to another <code>Vertex</code> object and r, g, b, and it draws an edge between the <code>Vertex</code> that the method is called on (i.e., <code>self</code>) and the other vertex, in the color given by r, g, b. And I have one method that takes r, g, b, and draws all the edges between the vertex and all the vertices in its adjacency list, in the color given by r, g, b. I also defined constants in the vertex.py file for the radius of each vertex and the width of each edge.</p></li>
+<li><p>Allow the user to select a starting vertex for the search. As the user moves the mouse around after pressing and releasing the mouse button on a starting vertex, if the mouse is on another vertex and the button is not pressed, use this other vertex as the goal. You can call the mouse location as “on” another vertex if it’s within the smallest square that surrounds the vertex. In other words, the mouse doesn’t have to be in the circle for the vertex, but just in the smallest surrounding square; that makes the test for inclusion really simple. (<em>Hint:</em> Write a method in the <code>Vertex</code> class that takes as parameters <em>x</em>- and <em>y</em>-coordinates and returns a boolean indicating whether this location is within the smallest surrounding square for this vertex.)</p>
+<p>The best way I can think of doing this is, each time through your main graphics loop, check every vertex in the dictionary to see whether the mouse is on it. If you need to, you can store references to the start vertex and the goal vertex in global variables. (I didn’t need globals for them, however.) For debugging purposes, draw these two vertices in red so that you can easily see them.</p>
+<p><strong>Fully test and debug displaying the graph and selecting the start and goal vertices before moving on.</strong></p></li>
+<li><p>Using the start and goal vertices, call breadth-first search. (Write your breadth-first search function, as discussed in the next section, before coming back to this part.) The result should be a list of vertices connecting the start and goal. Draw red edges between vertices on this path to show the path from the start to the goal. An example path is shown in red on the screenshot at the top of this page. If you have both a start vertex and a goal vertex, you can call your breadth-first search function each time through the main graphics loop; it should be fast enough to allow new paths to be computed as the user moves the mouse over new locations for the goal vertex.</p></li>
+</ol>
+<h2 id="breadth-first-search-on-the-graph-with-backchaining">Breadth-first search on the graph with backchaining</h2>
+<p>Write the breadth-first search algorithm as a function in a separate file, bfs.py. map_plot.py can import this function. The breadth-first search function should take as parameters references to the start and goal vertices, and it should return a path of vertices connecting them. Represent the path by a Python list of references to <code>Vertex</code> objects for all vertices on the path.</p>
+<p>Use the version of breadth-first search described in the chapter on graphs from the lecture notes. Since you need to identify all the vertices on the path between the start and the goal, you will need to keep track of backpointers and backchain to construct the path once the search has found the goal.</p>
+<h3 id="how-to-maintain-the-queue-for-the-frontier">How to maintain the queue for the frontier</h3>
+<p>Recall that you need to maintain a queue for the <strong>frontier</strong> of your breadth-first search: the vertices that have been reached from the start vertex but have not yet been explored from. The queue needs to be first-in, first-out.</p>
+<p>You could use a Python list for the queue. Let’s call the list <code>q</code>. You would insert an item, say <code>x</code>, by calling <code>q.append(x)</code>, and you would remove an item by writing <code>del q[0]</code>. The problem is that each time you remove an item from the queue, all other items have to shift to the next lower index, which takes time linear in the size of the queue. That’s not good. We want it to take constant time to insert an item into the queue and to remove an item from the queue.</p>
+<p>The Python <code>collections</code> module provides a class named <code>deque</code> that works as a queue with constant-time operations. In fact, it’s implemented internally with a linked list! A <strong>deque</strong> is a “double-ended queue”: you can insert into and remove from either end. You’ll use a deque as a regular queue, however. To insert, call the <code>append</code> method, just as you would on a Python list. To remove, call the <code>popleft</code> method; it takes no parameters and it removes the item in the queue that has been there the longest, returning this item. The <code>len</code> function returns how many items are in the queue. Example:</p>
+<div class="codex" data-src="example_deque.py">
+
+</div>
+<p>As you can see, you should make sure not to call <code>popleft</code> when the queue is empty.</p>
+<h3 id="how-to-keep-track-of-backpointers">How to keep track of backpointers</h3>
+<p>You can keep track of backpointers in one of two ways. One way is to add an instance variable for a backpointer in each <code>Vertex</code> object. You’ll have to initialize all the backpointer instance variables for all the vertices to <code>None</code> upon starting each breadth-first search. The other is to make a dictionary whose keys are references to <code>Vertex</code> objects and whose values are also references to <code>Vertex</code> objects. In particular, the value for a particular key is its backpointer. For the start vertex, its value should be <code>None</code>, since it has no backpointer but is on the path. For the dictionary approach, initializing at the start of a breadth-first search is easy: just make an empty dictionary.</p>
+<p>I implemented both ways, and I decided to stick with the dictionary approach. But either way is fine.</p>
+<h3 id="how-to-determine-whether-a-vertex-has-been-visited">How to determine whether a vertex has been visited</h3>
+<p>Breadth-first search needs to determine whether a vertex already has been visited, because if it has, then it should not be inserted again into the queue for the frontier. One way would be to maintain a boolean in each <code>Vertex</code> object that tells you whether the vertex has been visited. But you’d have to initialize the boolean values for all vertices (other than the start vertex) to <code>False</code> each time you start a breadth-first search.</p>
+<p>There’s an easier way. A vertex has been visited if and only if it has a backpointer. If you store backpointers in a dictionary, then to determine whether a vertex has been visited, you just need to determine whether a reference to its <code>Vertex</code> object appears in the dictionary. Remember that you can use the boolean <code>in</code> operator to determine whether an item is present in a dictionary.</p>
+<h2 id="grading-criteria">Grading criteria</h2>
+<p>Checkpoint: 5 points. 3 of the 5 points are for correct behavior, and the remaining 2 points are for implementation and style.</p>
+<p>The remaining 35 points are for the final version.</p>
+<p>Correctness: 28 points</p>
+<ul>
+<li>Program correctly reads in the file and builds the graph: 6 points (the checkpoint also tests this behavior)</li>
+<li>Breadth-first search algorithm finds the goal, with minimum number of edges in paths: 10 points</li>
+<li>Backchaining implemented correctly: 4 points</li>
+<li>Graph drawing is done correctly and reasonably efficiently: 2 points</li>
+<li>Start and goal vertex selection works correctly: 2 points</li>
+<li>Drawing the path from the start vertex to the goal vertex works correctly: 2 points</li>
+<li>Good selection of test runs for screenshots to demonstrate a working program: 2 points</li>
+</ul>
+<p>Style: 7 points</p>
+<ul>
+<li>Clear design and organization: 4 points</li>
+<li>Good variable names, function names, and comments: 2 points</li>
+<li>Correct use of instance variables: 1 point</li>
+</ul>
+<h2 id="extra-credit-ideas">Extra credit ideas</h2>
+<p>As usual, I encourage you to be creative in coming up with ideas for extra credit. Here are some that I thought of.</p>
+<ul>
+<li><p><strong>Displaying vertex names</strong>: 5 points. I demonstrated this option in class, and it appears in the screenshot above. When you display the start and goal vertices of a path, display their names, which you have in the <code>Vertex</code> objects.</p></li>
+<li><p><strong>Add vertices to the map</strong>: 5–10 points, depending on how many you add and the quality of your work. Make sure to submit an updated dartmouth_graph.txt file if you do this option. Maybe we’ll make your file the default file we give out next time.</p></li>
+<li><p><strong>Animate breadth-first search</strong>: 15 points. Animate the breadth-first search process, so that we can see the breadth-first search unfold. Draw the start vertex in one color, the goal vertex in another color, and draw vertices that have been visited and searched from (that is, are no longer on the frontier) in another color, and vertices in the frontier on yet another color.</p></li>
+<li><p><strong>Breadcrumb search</strong>: 20 points. When searching from a specific start vertex for a specific goal vertex, the breadth-first search tree can get rather bushy. One way to cut down on the bushiness is to run two breadth-first searches simultaneously, one from the start vertex and one from the goal vertex. Each search leaves “breadcrumbs” at the vertices it has visited, and whenever a search from one of the two vertices finds a breadcrumb from the other search, it can complete a path.</p></li>
+</ul>
+<h2 id="what-to-turn-in">What to turn in</h2>
+<p>Turn in screenshots of your program showing different paths to the goal, as well as showing the entire graph, with both vertices and edges drawn on the graph.</p>
+<p>Also submit all source code. If you make any changes to the dartmouth_graph.txt file (say, to add more vertices for extra credit), submit the altered file as well.</p>
+<h2 id="honor-code">Honor Code</h2>
+<p>The consequences of violating the Honor Code can be severe. Please always keep in mind the word and spirit of the Honor Code.</p>
+
+  <!--p &nbsp-->
+  <!-- pretty-print-->
+  <!--script(src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.js")-->
+  
+  
+  <!-- mathjax-->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    });
+  </script>
+</body>

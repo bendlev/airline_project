@@ -1,0 +1,58 @@
+FDA; Location: 365, 374; Adjacent vertices: Bones Gate, Rocky
+Rauner; Location: 637, 556; Adjacent vertices: Green Northeast, Wheeler, Richardson
+Gilman; Location: 858, 233; Adjacent vertices: Dana, Bildner
+Sherman; Location: 598, 180; Adjacent vertices: LALACS, Moore, Rope Ferry
+Green West; Location: 503, 710; Adjacent vertices: Green Center, Green Northwest, Green Southwest
+Fairchild; Location: 729, 381; Adjacent vertices: Burke, Steele
+Steele; Location: 681, 434; Adjacent vertices: Wheeler, Wilder, Fairchild
+Rope Ferry; Location: 625, 129; Adjacent vertices: Dicks House, Sherman
+XH; Location: 932, 705; Adjacent vertices: Gym, East Wheelock
+Carson; Location: 495, 413; Adjacent vertices: Rocky, Kemeny, Baker West
+AXA; Location: 205, 321; Adjacent vertices: KDE
+Green Northeast; Location: 636, 619; Adjacent vertices: Rauner, Green North, Green East, Wentworth, Green Center
+Green East; Location: 641, 707; Adjacent vertices: Green Center, Green Southeast, Green Northeast
+Blunt; Location: 423, 508; Adjacent vertices: Butterfield, Baker West
+Burke; Location: 775, 327; Adjacent vertices: Sudikoff, Bildner, Fairchild
+Rocky; Location: 421, 389; Adjacent vertices: FDA, Carson
+Sudikoff; Location: 736, 288; Adjacent vertices: Raven, Burke
+LSC North; Location: 936, 71; Adjacent vertices: LSC East, LSC West
+LALACS; Location: 569, 221; Adjacent vertices: Sherman, Choate
+East Wheelock; Location: 993, 687; Adjacent vertices: XH, Brace
+Fayerweather; Location: 844, 644; Adjacent vertices: Gym
+Brace; Location: 958, 623; Adjacent vertices: East Wheelock
+Gym; Location: 873, 725; Adjacent vertices: XH, Observatory Rd, Fayerweather
+Wheeler; Location: 646, 485; Adjacent vertices: Steele, Rauner, Wilder
+LSC East; Location: 960, 115; Adjacent vertices: LSC North, Traffic Light, Dana
+New Hamp; Location: 739, 773; Adjacent vertices: Observatory Rd, Green Southeast
+Dicks House; Location: 657, 81; Adjacent vertices: 11 Rope Ferry, Rope Ferry
+Cummings; Location: 86, 589; Adjacent vertices: Thayer, Murdough
+Bildner; Location: 819, 280; Adjacent vertices: Gilman, Burke
+Baker West; Location: 496, 504; Adjacent vertices: Sanborn, Blunt, Carson
+Wentworth; Location: 727, 606; Adjacent vertices: Richardson, Green Northeast
+Traffic Light; Location: 975, 183; Adjacent vertices: LSC East, Dana, LSC West
+Green Southeast; Location: 647, 793; Adjacent vertices: Green South, Green East, New Hamp, Green Center
+Observatory Rd; Location: 809, 751; Adjacent vertices: Gym, New Hamp
+Murdough; Location: 84, 523; Adjacent vertices: Tuck, Thayer, Cummings, Buchanan
+Tuck; Location: 116, 487; Adjacent vertices: Murdough, Buchanan
+Tuck Dr; Location: 240, 509; Adjacent vertices: Gold Coast, Buchanan
+Kemeny; Location: 499, 333; Adjacent vertices: Choate, Carson
+11 Rope Ferry; Location: 686, 46; Adjacent vertices: Dicks House
+Green South; Location: 580, 798; Adjacent vertices: Green Southeast, Green Southwest
+Choate; Location: 532, 270; Adjacent vertices: LALACS, Kemeny
+Raven; Location: 696, 251; Adjacent vertices: Sudikoff, Moore
+Richardson; Location: 725, 533; Adjacent vertices: Wilder, Wentworth, Rauner
+Gold Coast; Location: 295, 507; Adjacent vertices: Tuck Dr, Butterfield
+Dana; Location: 901, 206; Adjacent vertices: Gilman, Traffic Light, LSC West, LSC East
+LSC West; Location: 924, 121; Adjacent vertices: LSC North, Traffic Light, Dana
+Sanborn; Location: 498, 560; Adjacent vertices: Baker West, Green Northwest
+Moore; Location: 644, 213; Adjacent vertices: Sherman, Raven
+Wilder; Location: 730, 477; Adjacent vertices: Richardson, Steele, Wheeler
+Butterfield; Location: 359, 509; Adjacent vertices: Blunt, Gold Coast
+Green Northwest; Location: 503, 622; Adjacent vertices: Sanborn, Green North, Green West, Green Center
+Bones Gate; Location: 314, 358; Adjacent vertices: FDA, KDE
+Green Southwest; Location: 510, 798; Adjacent vertices: Green South, Green West, Green Center
+Green North; Location: 570, 618; Adjacent vertices: Green Northeast, Green Northwest
+Green Center; Location: 576, 711; Adjacent vertices: Green East, Green West, Green Southeast, Green Southwest, Green Northeast, Green Northwest
+KDE; Location: 262, 337; Adjacent vertices: Bones Gate, AXA
+Thayer; Location: 127, 548; Adjacent vertices: Murdough, Cummings, Buchanan
+Buchanan; Location: 178, 509; Adjacent vertices: Tuck Dr, Thayer, Tuck, Murdough

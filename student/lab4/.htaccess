@@ -1,0 +1,5 @@
+# catch all error redirect - 
+# the file must be over 512 bytes in size for chrome and ie to load
+# can be simply the index.html file or a meta redirect
+
+AddHandler text/plain .py

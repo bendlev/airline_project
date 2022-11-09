@@ -1,0 +1,11 @@
+from collections import deque
+q = deque()
+q.append("Iowa")
+q.append("Ohio")
+print(len(q))
+print(q.popleft())
+print(len(q))
+q.append("Idaho")
+print(q.popleft())
+print(q.popleft())
+print(q.popleft())

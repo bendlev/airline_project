@@ -4,9 +4,10 @@
 
 from airport import Airport
 from cs1lib import *
+from breadth_first import breadth_first
 
 
-f = open("airport_graph.txt", "r", encoding="utf-8")
+f = open(r"student/airport_graph.txt", "r", encoding="utf-8")
 
 ndict = {}
 
@@ -36,11 +37,163 @@ for iata in ndict:
 
 WINDOW_WIDTH = 1800
 WINDOW_HEIGHT = 900
-img = load_image("world_1800_900.jpg")
+img = load_image(r"student/world_1800_900.jpg")
+
+mouseX = 0
+mouseY = 0
+
+def myMouse(x, y):
+    global mouseX, mouseY
+
+    mouseX = x
+    mouseY = y
+
+# use to select unique airports
+
+# def main():
+#     global ndict, WINDOW_WIDTH, WINDOW_HEIGHT, mouseX, mouseY
+
+#     clear()
+#     draw_image(img, 0, 0)
+
+#     for key in ndict:
+#         set_fill_color(1, 0, 1)
+#         ndict[key].draw(WINDOW_WIDTH, WINDOW_HEIGHT)
+
+#     for key in ndict:
+#         if ndict[key].in_circle(mouseX, mouseY):
+#             set_fill_color(1, 1, 1)
+#             draw_rectangle(0, 850, 200, 50)
+#             set_font_size(16)
+#             draw_text(key, 20, 885)
+
+path1 = breadth_first(ndict["YTH"], ndict["FTU"])
+
+print("===== Path 1 =====")
+for p in path1:
+    print(p.name)  
+print("================") 
+
+path2 = breadth_first(ndict["USH"], ndict["PYJ"])
+
+print("===== Path 2 =====")
+for p in path2:
+    print(p.name)  
+print("================") 
+
+path3 = breadth_first(ndict["SCY"], ndict["SCT"])
+
+print("===== Path 3 =====")
+for p in path3:
+    print(p.name)  
+print("================") 
+
+path4 = breadth_first(ndict["IVC"], ndict["EGS"])
+
+print("===== Path 4 =====")
+for p in path4:
+    print(p.name)
+print("================")   
+
+path5 = breadth_first(ndict["SCC"], ndict["KCT"])
+
+print("===== Path 5 =====")
+for p in path5:
+    print(p.name) 
+print("================") 
+
+
+for key in ndict:
+    ndict[key].set_draw_coords(WINDOW_WIDTH, WINDOW_HEIGHT)
+
+line_vals = []
+
+# populate line_vals with x1, y1, x2, y2 for each line in the BFS path
+def draw_paths(pathList):
+
+    global line_vals
+
+    i = 0
+    while i < len(pathList) - 1:
+        line_vals.append([int(pathList[i].draw_x), int(pathList[i].draw_y), int(pathList[i+1].draw_x), int(pathList[i+1].draw_y)])
+        i += 1
+    
+    for line in line_vals:
+
+        set_stroke_color(1, 0, 0)
+        set_stroke_width(3)
+        draw_line(*line)
+
+# draw paths between points in a BFS path
+# def main():
+#     global ndict, WINDOW_WIDTH, WINDOW_HEIGHT, mouseX, mouseY
+
+#     clear()
+#     draw_image(img, 0, 0)
+
+#     for key in ndict:
+#         set_stroke_width(1)
+#         set_fill_color(0, 1, 0)
+#         ndict[key].draw(WINDOW_WIDTH, WINDOW_HEIGHT)
+
+#     draw_paths(path5)
+
+
+# start_graphics(main, width=WINDOW_WIDTH, height=WINDOW_HEIGHT, mouse_move=myMouse)
+
+def airportBot():
+    print(f"== Welcome to Kommineni Air Ways! ==\n")
+    print(f"We are focused on making your journey comfortable, and quick.\n")
+    print(f"With our BFS search algorithm, we can find you the shortest path to your destination.\n\n")
+
+    print(f"Here are our currently serviced airports:\n\n")
+    i = 0
+
+    airport_str = ""
+    for key in ndict:
+        if i % 20 == 0 and i != 0:
+            airport_str += key + ", "  + "\n"
+            i += 1
+        else:
+            airport_str += key + ", "
+            i += 1
+
+    print(airport_str + "\n")
+    print(f"Where are you coming from? (Enter the 3-letter code which will serve as your Start vertex, and press [ENTER])\n")
+    print(f"We suggest YTH -> FTU, USH -> PYJ, SCY -> SCT, IVC -> EGS, SCC -> KCT\n")
+    startKey = input().upper()
+    start = ndict[startKey]
+    print(f"Great! You'll be starting from {startKey}: {ndict[startKey].name}\n\n")
+
+    print(airport_str + "\n")
+    print(f"Where are you going to? (Enter the 3-letter code which will serve as your Start vertex, and press [ENTER])\n")
+    print(f"You'll be starting from {startKey}: {ndict[startKey].name}\n\n")
+    print(f"We suggest YTH -> FTU, USH -> PYJ, SCY -> SCT, IVC -> EGS, SCC -> KCT\n")
+    goalKey = input().upper()
+    goal = ndict[goalKey]
+    print(f"Great! You'll be starting from {goalKey}: {ndict[goalKey].name}\n\n")
+
+    print(f"Departing from: {str(start)}\n")
+    print(f"Arriving at: {str(goal)}\n")
+
+    userPath = breadth_first(start, goal)
+
+    return userPath
+
+myPath = airportBot()
 
 def main():
+    global ndict, WINDOW_WIDTH, WINDOW_HEIGHT, mouseX, mouseY
 
+    clear()
     draw_image(img, 0, 0)
-    
 
-start_graphics(main, width=WINDOW_WIDTH, height=WINDOW_HEIGHT)
+    for key in ndict:
+        set_stroke_width(1)
+        set_fill_color(0, 1, 0)
+        ndict[key].draw(WINDOW_WIDTH, WINDOW_HEIGHT)
+
+    draw_paths(myPath)
+
+
+start_graphics(main, width=WINDOW_WIDTH, height=WINDOW_HEIGHT, mouse_move=myMouse)

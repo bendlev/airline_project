@@ -5,6 +5,7 @@
 # students will have to code this themselves to suit airport_graph.txt
 
 from cs1lib import *
+from math import sqrt
 
 class Airport:
 
@@ -12,8 +13,12 @@ class Airport:
         self.iata = iata
         self.name = name
         self.city = city
-        self.lat = lat
-        self.long = long
+        self.lat = float(lat)
+        self.long = float(long)
+
+        
+
+        self.RADIUS = 2
 
         self.neighbors = []
         self.neighbor_count = None
@@ -25,15 +30,23 @@ class Airport:
     def get_neighbors(self) -> list:
         if not None: return self.neighbors
 
+    def set_draw_coords(self, WINDOW_WIDTH, WINDOW_HEIGHT) -> None:
+        self.draw_x = (self.long + 180) * (WINDOW_WIDTH / 360)
+        self.draw_y = ((self.lat * -1) + 90) * (WINDOW_HEIGHT / 180)
+
     def draw(self, WINDOW_WIDTH, WINDOW_HEIGHT) -> None:
 
-        RAD = 5
 
-        draw_x = (self.long + 180) * (WINDOW_WIDTH / 360)
-        draw_y = ((self.lat * -1) + 90) * (WINDOW_HEIGHT / 180)
+        # only instantiates draw_x and draw_y when being drawn, might change
+        self.draw_x = (self.long + 180) * (WINDOW_WIDTH / 360)
+        self.draw_y = ((self.lat * -1) + 90) * (WINDOW_HEIGHT / 180)
 
-        draw_circle(draw_x, draw_y, RAD)
+        draw_circle(self.draw_x, self.draw_y, self.RADIUS)
     
+    def in_circle(self, mouseX, mouseY):
+
+        return sqrt((mouseX - self.draw_x)**2 + (mouseY - self.draw_y)**2) <= self.RADIUS
+
     def __str__(self) -> str:
 
         i = 0

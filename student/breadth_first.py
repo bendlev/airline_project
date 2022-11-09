@@ -3,6 +3,7 @@
 # Purpose: Define a function to perform a breadth first search b/t start and goal vertices.
 
 from collections import deque
+from airport import Airport
 
 def breadth_first(start, goal):
 
